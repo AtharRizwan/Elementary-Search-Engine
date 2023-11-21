@@ -4,7 +4,7 @@ import csv
 def convert_tsv_to_csv(tsv_filename, csv_filename):
 
     # Open the TSV file and read it
-    with open(tsv_filename, 'r') as tsv_file: 
+    with open(tsv_filename, 'r', encoding="utf8") as tsv_file: 
         tsv_reader = csv.reader(tsv_file, delimiter='\t')
         
         with open(csv_filename, 'w', newline='') as csv_file:
