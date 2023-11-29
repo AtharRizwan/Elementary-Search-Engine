@@ -1,0 +1,9 @@
+pandas
+numpy
+matplotlib
+seaborn
+os
+sys
+warnings
+csv
+json
