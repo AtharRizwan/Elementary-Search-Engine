@@ -1,0 +1,93 @@
+/* SearchBar.css (CSS Styles) */
+.search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 60vh;
+  }
+  
+  .logo {
+    margin-right: 20px;
+    width: 400px; /* Adjust the size as needed */
+    height: 170px; /* Adjust the size as needed */
+  }
+  
+  .search-bar {
+    display: flex;
+    width: 350px;
+    align-items: center;
+    border: 1px solid #535353;
+    border-radius: 25px;
+    overflow: hidden;
+    margin-top: 10px; /* Adjust the margin as needed */ 
+  }
+  
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    padding: 10px;
+    border-radius: 50px;
+  }
+    
+  .icons {
+    display: flex;
+  }
+  
+  .search-icon{
+    background-color: #ffffff;  
+    color: white;
+    padding: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  .speech-icon {
+    background-color: #ffffff;  
+    margin-right: 10px;
+    color: white;
+    padding: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Margin between icons */
+  .search-icon + .speech-icon {
+    margin-left: 5px;
+  }
+
+  .search-button {
+    width: 100px;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #4285f4; /* Default color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  /* Change color on hover */
+  .search-button:hover {
+    background-color: #34a853; /* New color on hover */
+  }
+
+  .add-article-button {
+    width: 140px;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #000000; /* Default color */
+    color: white;
+    border: none;
+    border-radius: 15px;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+  
+.buttons{
+    display: flex;
+    justify-content: space-between;
+}
