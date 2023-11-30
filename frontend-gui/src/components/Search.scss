@@ -4,6 +4,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: 10px;
     height: 60vh;
   }
   
@@ -16,7 +17,7 @@
   .search-bar {
     margin-bottom: 10px;
     display: flex;
-    width: 550px;
+    width: 600px;
     align-items: center;
     border: 1px solid #535353;
     border-radius: 25px;
@@ -54,7 +55,32 @@
     display: flex;
     align-items: center;
   }
+
+  .clear-icon {
+    background-color: #ffffff;  
+    margin-right: 10px;
+    color: red;
+    padding: 1px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
   
+  .speech-icon:hover {
+    transform: scale(1.2); /* Adjust the scale factor as needed */
+    cursor: pointer;
+  }  
+
+  .search-icon:hover {
+    transform: scale(1.2); /* Adjust the scale factor as needed */
+    cursor: pointer;
+  }  
+
+  .clear-icon:hover {
+    transform: scale(1.2); /* Adjust the scale factor as needed */
+    cursor: pointer;
+  }  
+
   /* Margin between icons */
   .search-icon + .speech-icon {
     margin-left: 5px;
@@ -74,21 +100,46 @@
   /* Change color on hover */
   .search-button:hover {
     background-color: #34a853; /* New color on hover */
+    transform: scale(1.1); /* Adjust the scale factor as needed */
+    cursor: pointer;
   }
 
   .add-article-button {
-    width: 140px;
+    width: 100px;
     margin-top: 10px;
     padding: 10px;
     background-color: #000000; /* Default color */
     color: white;
     border: none;
-    border-radius: 15px;
-    margin-left: 5px;
+    border-radius: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+
+  .add-article-button:hover {
+    background-color: #5c5c5c; /* New color on hover */
+    transform: scale(1.1); /* Adjust the scale factor as needed */
     cursor: pointer;
   }
   
 .buttons{
     display: flex;
     justify-content: space-between;
+}
+
+.stop-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background-color: red;
+  color: white;
+  font-size: 20px;
+  text-align: center;
+  line-height: 40px;
+  cursor: pointer;
+}
+
+.stop-icon:hover {
+  background-color: darkred;
 }
