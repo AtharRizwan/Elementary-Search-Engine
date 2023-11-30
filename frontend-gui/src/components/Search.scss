@@ -14,13 +14,14 @@
   }
   
   .search-bar {
+    margin-bottom: 10px;
     display: flex;
-    width: 350px;
+    width: 550px;
     align-items: center;
     border: 1px solid #535353;
     border-radius: 25px;
     overflow: hidden;
-    margin-top: 10px; /* Adjust the margin as needed */ 
+    margin-top: 10px; /* Adjust the margin as needed */  
   }
   
   input {
