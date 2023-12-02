@@ -143,3 +143,56 @@
 .stop-icon:hover {
   background-color: darkred;
 }
+
+/* CSS with class names */
+
+/* Updated CSS for the container */
+.search-results-container {
+  position: fixed; /* or position: fixed; */
+  top: 400px; /* Adjust the top position based on your layout */
+  left: 250px; /* Adjust the left position based on your layout */
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.14);
+}
+
+
+/* Style for the heading */
+.search-results-heading {
+  color: #333;
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  margin-top: 1px;
+}
+
+/* Style for the list */
+.search-results-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+/* Style for list items */
+.search-results-item {
+  margin-bottom: 10px;
+}
+
+/* Style for the links */
+.search-results-link {
+  text-decoration: none;
+  color: #007bff; /* You can change this color to your preference */
+  font-weight: bold;
+  transition: color 0.3s ease-in-out;
+}
+
+/* Hover effect for the links */
+.search-results-link:hover {
+  color: #0056b3; /* You can change this color to your preference */
+  text-decoration: underline;
+}
