@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "./Search.scss" 
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import axios from 'axios';
@@ -6,6 +6,7 @@ import axios from 'axios';
 const Search = () => { 
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [results, setResults] = useState([]);
 
   let handleSpeechEnd = () => {}
 
@@ -40,22 +41,15 @@ const Search = () => {
     setSearchText('');
   };
 
+
   const handleSingleWordSearch = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/search_1?word=${searchText}`);
-      console.log(response)
+      const response = await fetch(`http://localhost:5000/search_1?word=${searchText}`);
+      const data = await response.json();
       setSearchResults(response.data);
+      setResults(data)
     } catch (error) {
       console.error('Error fetching single word search result:', error);
-    }
-  };
-
-  const handleMultiWordSearch = async () => {
-    try {
-      const response = await axios.get(`http://localhost:5000/search?query=${searchText}`);
-      setSearchResults(response.data);
-    } catch (error) {
-      console.error('Error fetching multi-word search results:', error);
     }
   };
 
@@ -96,15 +90,32 @@ const Search = () => {
           </div> 
         </div>  
       <div className='buttons'>
-        <button className="search-button">Search</button>
+        <button className="search-button" onClick={handleSingleWordSearch}>Search</button>
         <button className="add-article-button">Add Article</button>
       </div> 
 
-      {searchResults && 
-        (
-          searchResults
-        )
-      }
+      {(results.titles && results.titles.length > 0) && (
+        <div className="search-results-container">
+          <h2 className="search-results-heading">Search Results</h2>
+          <ul className="search-results-list">
+            {results.titles.map((title, index) => (
+              <li key={index} className="search-results-item">
+                <a
+                  href={results.urls[index]}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="search-results-link"
+                >
+                  {title.map((word, i) => (
+                    i === 0 ? word.charAt(0).toUpperCase() + word.slice(1) : ` ${word}`
+                  ))}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
     </div>
   );
 }
