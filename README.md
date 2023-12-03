@@ -2,8 +2,11 @@
 
 ## Data Set Details
 
-For the project, we’ll be using the arXiv dataset which contains myriads of articles on various topics across STEM (Science, Technology, Engineering, Mathematics). It will serve as a good dataset for the semester project and also fulfills the requirements. 
+For the project, we’ll be using the nela-gt-2022 dataset which contains myriads of articles on various topics across STEM (Science, Technology, Engineering, Mathematics). It will serve as a good dataset for the semester project and also fulfill the requirements. 
 
-## Frame Works
+## Frame Works and Tools
 
-We plan to store our articles indexes in files. For accessing and dealing with the indexes, a server which basically retrieves relevant indexes and adds new articles etc. (Basically the main DSA part is implemented there). This second server is to be hosted as a C++ SDK server due to the fast computation power of the language. It will be connected to a frontend which will pass requests it. The frontend GUI is to be made in ReactJS, one of the leading industry standards today. Moreover, we can also deploy the frontend and the servers on cloud platforms and make the search engine available to all, however for the project, we plan to do it all on localhost.
+We have chosen python for this project for its fast prototyping ability and rich ecosystem of tools and libraries. Our lexicon is being populated as our articles are being forward indexed. After the processing, all the processed indexes are stored in .JSON files. Before being added to the lexicon, all the words are lemmatized for better search experience. We preferred lemmatization technique over stemming for its better result accuracy and preservation of the meaning of the words.
+
+Our frontend is made in ReactJS as it is the leading industry standard.
+Moreover, we can also deploy the frontend and the servers on cloud platforms and make the search engine available to all, however for the project, we plan to do it all on localhost.
