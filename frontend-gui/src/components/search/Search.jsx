@@ -42,14 +42,33 @@ const Search = () => {
   };
 
 
-  const handleSingleWordSearch = async () => {
+  const handleSingleWordSearch = async () => { 
     try {
       const response = await fetch(`http://localhost:5000/search_1?word=${searchText}`);
-      const data = await response.json();
-      setSearchResults(response.data);
+      const data = await response.json(); 
       setResults(data)
     } catch (error) {
       console.error('Error fetching single word search result:', error);
+    }
+  };
+
+  const handleMultiWordSearch = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/search_2?word=${searchText}`); 
+      const data = await response.json();
+      console.log(data);
+      setResults(data); 
+    } catch (error) {
+      console.error('Error fetching single word search result:', error);
+    }
+  };
+
+  const performSearch = () => {
+    const words = searchText.trim().split(/\s+/);
+    if (words.length === 1) {
+      handleSingleWordSearch();
+    } else if (words.length > 1) {
+      handleMultiWordSearch();
     }
   };
 
@@ -72,7 +91,7 @@ const Search = () => {
               >
                 &#10006;
             </div> 
-            <div className="search-icon" onClick={handleSingleWordSearch} title='Click to search'>&#128269;</div>
+            <div className="search-icon" onClick={performSearch} title='Click to search'>&#128269;</div>
             <div
               className="speech-icon"
               onClick={SpeechRecognition.startListening}
@@ -90,9 +109,9 @@ const Search = () => {
           </div> 
         </div>  
       <div className='buttons'>
-        <button className="search-button" onClick={handleSingleWordSearch}>Search</button>
+        <button className="search-button" onClick={performSearch}>Search</button>
         <button className="add-article-button">Add Article</button>
-      </div> 
+      </div>  
 
       {(results.titles && results.titles.length > 0) && (
         <div className="search-results-container">
@@ -115,6 +134,7 @@ const Search = () => {
           </ul>
         </div>
       )}
+ 
 
     </div>
   );
