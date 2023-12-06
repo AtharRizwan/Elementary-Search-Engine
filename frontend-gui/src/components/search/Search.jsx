@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import "./Search.scss" 
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import axios from 'axios';
+import Loader from "../../components/loader/Loader"; 
 
 const Search = () => { 
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
 
   let handleSpeechEnd = () => {}
@@ -44,9 +45,11 @@ const Search = () => {
 
   const handleSingleWordSearch = async () => { 
     try {
+      setIsLoading(true);
       const response = await fetch(`http://localhost:5000/search_1?word=${searchText}`);
       const data = await response.json(); 
-      setResults(data)
+      setResults(data);
+      setIsLoading(false)
     } catch (error) {
       console.error('Error fetching single word search result:', error);
     }
@@ -54,10 +57,12 @@ const Search = () => {
 
   const handleMultiWordSearch = async () => {
     try {
+      setIsLoading(true)
       const response = await fetch(`http://localhost:5000/search_2?word=${searchText}`); 
       const data = await response.json();
       console.log(data);
       setResults(data); 
+      setIsLoading(false)
     } catch (error) {
       console.error('Error fetching single word search result:', error);
     }
@@ -92,6 +97,7 @@ const Search = () => {
                 &#10006;
             </div> 
             <div className="search-icon" onClick={performSearch} title='Click to search'>&#128269;</div>
+            {isLoading && <Loader />}
             <div
               className="speech-icon"
               onClick={SpeechRecognition.startListening}
@@ -110,6 +116,7 @@ const Search = () => {
         </div>  
       <div className='buttons'>
         <button className="search-button" onClick={performSearch}>Search</button>
+        {isLoading && <Loader />}
         <button className="add-article-button">Add Article</button>
       </div>  
 
