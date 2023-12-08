@@ -87,7 +87,7 @@
   }  
 
   /* Margin between icons */
-  .search-icon + .speech-icon {
+  .search-icon + .speech-icon + .add-img-button {
     margin-left: 5px;
   }
 
@@ -104,6 +104,23 @@
   
   /* Change color on hover */
   .search-button:hover { 
+    transform: scale(1.1); /* Adjust the scale factor as needed */
+    cursor: pointer;
+  }
+
+  .add-img-button {
+    width: 150px;
+    margin-top: 10px;
+    margin-left: 10px;
+    padding: 10px;
+    background-color: #f44242; /* Default color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+   
+  .add-img-button:hover { 
     transform: scale(1.1); /* Adjust the scale factor as needed */
     cursor: pointer;
   }

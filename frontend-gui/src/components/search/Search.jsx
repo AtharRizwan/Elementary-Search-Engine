@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import "./Search.scss" 
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import Loader from "../../components/loader/Loader"; 
+import Loader from "../../components/loader/Loader";  
+import ImageDisplay from '../image/ImageDisplay';
 
 const Search = () => { 
   const [searchText, setSearchText] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
+  const [imageSrc, setImageSrc] = useState(null);
+  const [check, setcheck] = useState(false);
 
   let handleSpeechEnd = () => {}
 
@@ -41,10 +44,11 @@ const Search = () => {
     resetTranscript();
     setSearchText('');
   };
-
+ 
 
   const handleSingleWordSearch = async () => { 
     try {
+      setcheck(false)
       setIsLoading(true);
       const response = await fetch(`http://localhost:5000/search_1?word=${searchText}`);
       const data = await response.json(); 
@@ -57,6 +61,7 @@ const Search = () => {
 
   const handleMultiWordSearch = async () => {
     try {
+      setcheck(false)
       setIsLoading(true)
       const response = await fetch(`http://localhost:5000/search_2?word=${searchText}`); 
       const data = await response.json();
@@ -74,6 +79,25 @@ const Search = () => {
       handleSingleWordSearch();
     } else if (words.length > 1) {
       handleMultiWordSearch();
+    }
+  };
+
+  const HandleGenAi = async () => {
+    try {
+      setcheck(true)
+      setIsLoading(true);
+      const response = await fetch(`http://localhost:5000/gen?word=${searchText}`);
+      const data = await response.json();
+      const blob = await response.blob();
+
+      // Create a local URL for the blob
+      const imageUrl = URL.createObjectURL(blob);
+      setImageSrc(imageUrl)
+      setcheck(true)
+      setIsLoading(false);
+    } catch (error) {
+      console.error('Error generating AI image:', error);
+      setIsLoading(false);
     }
   };
 
@@ -118,6 +142,9 @@ const Search = () => {
         <button className="search-button" onClick={performSearch}>Search</button>
         {isLoading && <Loader />}
         <button className="add-article-button">Add Article</button>
+        {isLoading && <Loader />}
+        <button className="add-img-button" onClick={HandleGenAi}>Create Image</button>
+        {isLoading && <Loader />}
       </div>  
 
       {(results.titles && results.titles.length > 0) && (
@@ -140,9 +167,13 @@ const Search = () => {
             ))}
           </ul>
         </div>
-      )}
- 
-
+      )} 
+      <div> 
+       {(imageSrc) &&
+        (<ImageDisplay />)
+       }
+       <ImageDisplay />
+      </div>
     </div>
   );
 }
