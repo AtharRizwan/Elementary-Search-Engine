@@ -8,6 +8,7 @@ const Search = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
+  const [imageSrc, setImageSrc] = useState('');
 
   let handleSpeechEnd = () => {}
 
@@ -77,6 +78,19 @@ const Search = () => {
     }
   };
 
+  const HandleGenAi = async () => {
+    try {
+      setIsLoading(true)
+      const response = await fetch(`http://localhost:5000/gen?word=${searchText}`); 
+      const data = await response.json();
+      console.log(data.image); 
+      setImageSrc(data.image);
+      setIsLoading(false)
+    } catch (error) {
+      console.error('Error fetching single word search result:', error);
+    }
+  } 
+
   return (
     <div className="search-container">
       <img src="logo.jpeg" alt="Logo" className="logo" />
@@ -118,6 +132,9 @@ const Search = () => {
         <button className="search-button" onClick={performSearch}>Search</button>
         {isLoading && <Loader />}
         <button className="add-article-button">Add Article</button>
+        {isLoading && <Loader />}
+        <button className="add-img-button" onClick={HandleGenAi}>Create Image</button>
+        {isLoading && <Loader />}
       </div>  
 
       {(results.titles && results.titles.length > 0) && (
@@ -140,10 +157,9 @@ const Search = () => {
             ))}
           </ul>
         </div>
-      )}
- 
-
+      )} 
     </div>
+ 
   );
 }
 
