@@ -10,6 +10,7 @@ const Search = () => {
   const [results, setResults] = useState([]);
   const [imageSrc, setImageSrc] = useState('');
   const [check, setcheck] = useState(false);
+  const [time, settime] = useState(0);
  
   const handleSearchChange = (e) => { 
     setSearchText(e.target.value); 
@@ -24,8 +25,12 @@ const Search = () => {
     try {
       setcheck(false)
       setIsLoading(true);
+      const startTime = performance.now();
       const response = await fetch(`http://localhost:5000/search_1?word=${searchText}`);
       const data = await response.json(); 
+      const endTime = performance.now();
+      const elapsedTime = ((endTime - startTime)/1000).toFixed(3);
+      settime(elapsedTime)
       setResults(data);
       setIsLoading(false)
     } catch (error) {
@@ -37,8 +42,12 @@ const Search = () => {
     try {
       setcheck(false)
       setIsLoading(true)
+      const startTime = performance.now();
       const response = await fetch(`http://localhost:5000/search_2?word=${searchText}`); 
       const data = await response.json();
+      const endTime = performance.now();
+      const elapsedTime = ((endTime - startTime)/1000).toFixed(3);
+      settime(elapsedTime)
       console.log(data);
       setResults(data); 
       setIsLoading(false)
@@ -113,7 +122,9 @@ const Search = () => {
 
       {(results.titles && results.titles.length > 0) && (
         <div className="search-results-container">
-          <h2 className="search-results-heading">Search Results</h2>
+          <h1 className="search-results-heading">Search Results</h1>
+          <p className='time-cont'> Results found in {time}s</p>
+          <hr/>
           <ul className="search-results-list">
             {results.titles.map((title, index) => (
               <li key={index} className="search-results-item">
@@ -131,7 +142,7 @@ const Search = () => {
             ))}
           </ul>
         </div>
-      )} 
+      )}  
       {check && (<img src={imageSrc} alt="Example" style={{ maxWidth: '100%' }} />)}
         
     </div>
