@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import "./Search.scss" 
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import React, { useState } from 'react';
+import "./Search.scss"  
 import Loader from "../../components/loader/Loader";  
 import ImageDisplay from '../image/ImageDisplay';
 
@@ -9,39 +8,14 @@ const Search = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
-  const [imageSrc, setImageSrc] = useState(null);
+  const [imageSrc, setImageSrc] = useState('');
   const [check, setcheck] = useState(false);
-
-  let handleSpeechEnd = () => {}
-
-  const {
-    transcript,
-    listening,
-    resetTranscript,
-    browserSupportsSpeechRecognition
-  } = useSpeechRecognition({
-    onEnd: handleSpeechEnd, 
-  });
-
-  handleSpeechEnd = () => {
-    setSearchText(transcript);
+ 
+  const handleSearchChange = (e) => { 
+    setSearchText(e.target.value); 
   };
 
-  if (!browserSupportsSpeechRecognition) {
-    return <span>Browser doesn't support speech recognition.</span>;
-  }
-  
-  const handleSearchChange = (e) => {
-    if (transcript){
-      setSearchText(transcript);
-    }
-    else{
-      setSearchText(e.target.value);
-    } 
-  };
-
-  const clearTranscript = () => {
-    resetTranscript();
+  const clearTranscript = () => { 
     setSearchText('');
   };
  
@@ -82,19 +56,19 @@ const Search = () => {
     }
   };
 
-  const HandleGenAi = async () => {
+  const HandleGenAi = async (e) => { 
     try {
+      window.location.reload(false);
+      e.preventDefault();
       setcheck(true)
       setIsLoading(true);
       const response = await fetch(`http://localhost:5000/gen?word=${searchText}`);
-      const data = await response.json();
-      const blob = await response.blob();
-
-      // Create a local URL for the blob
-      const imageUrl = URL.createObjectURL(blob);
-      setImageSrc(imageUrl)
+      const data = await response.json(); 
+      setImageSrc(data.image)
+      setSearchResults(data.word)
       setcheck(true)
       setIsLoading(false);
+    
     } catch (error) {
       console.error('Error generating AI image:', error);
       setIsLoading(false);
@@ -104,7 +78,6 @@ const Search = () => {
   return (
     <div className="search-container">
       <img src="logo.jpeg" alt="Logo" className="logo" />
- 
         <div className="search-bar">
           <input
             type="text"
@@ -123,19 +96,11 @@ const Search = () => {
             <div className="search-icon" onClick={performSearch} title='Click to search'>&#128269;</div>
             {isLoading && <Loader />}
             <div
-              className="speech-icon"
-              onClick={SpeechRecognition.startListening}
+              className="speech-icon" 
               title="Click to Speak"
             >
               &#128266;
-            </div>
-            {listening && 
-            (
-              <div className="stop-icon"               
-                onClick={SpeechRecognition.startListening}
-                title="Stop Listening">
-              </div>
-            )}
+            </div> 
           </div> 
         </div>  
       <div className='buttons'>
@@ -143,7 +108,7 @@ const Search = () => {
         {isLoading && <Loader />}
         <button className="add-article-button">Add Article</button>
         {isLoading && <Loader />}
-        <button className="add-img-button" onClick={HandleGenAi}>Create Image</button>
+        <button className="add-img-button" type='button' onClick={(e) => {HandleGenAi(e)}}>Create Image</button>
         {isLoading && <Loader />}
       </div>  
 
@@ -168,12 +133,9 @@ const Search = () => {
           </ul>
         </div>
       )} 
-      <div> 
-       {(imageSrc) &&
-        (<ImageDisplay />)
-       }
-       <ImageDisplay />
-      </div>
+      {check && <ImageDisplay />}
+       
+   
     </div>
   );
 }
