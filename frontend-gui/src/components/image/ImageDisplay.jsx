@@ -4,7 +4,7 @@ const ImageDisplay = () => {
   const [imageSrc, setImageSrc] = useState('');
 
   useEffect(() => { 
-    const imagePath = process.env.PUBLIC_URL + '/Photos/image.jpeg';
+    const imagePath = process.env.PUBLIC_URL + '/Photos/image.jpeg'; 
     setImageSrc(imagePath);
   }, []);
 

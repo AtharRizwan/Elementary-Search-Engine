@@ -56,32 +56,31 @@ const Search = () => {
     }
   };
 
-  const HandleGenAi = async (e) => { 
-    try {
-      window.location.reload(false);
-      e.preventDefault();
-      setcheck(true)
-      setIsLoading(true);
+  const handleGenAi = async (e) => { 
+    try {  
+      setcheck(true);
+      e.preventDefault(); 
+      setIsLoading(true); 
       const response = await fetch(`http://localhost:5000/gen?word=${searchText}`);
-      const data = await response.json(); 
-      setImageSrc(data.image)
-      setSearchResults(data.word)
-      setcheck(true)
+      const data = await response.json();   
+      setImageSrc(`data:image/png;base64,${data.image}`)   
       setIsLoading(false);
-    
     } catch (error) {
       console.error('Error generating AI image:', error);
       setIsLoading(false);
     }
   };
 
+
   return (
     <div className="search-container">
       <img src="logo.jpeg" alt="Logo" className="logo" />
         <div className="search-bar">
           <input
+            name='searchText'
             type="text"
             placeholder="Search..."
+            id='00'
             value={searchText}
             onChange={handleSearchChange}
           />
@@ -104,11 +103,11 @@ const Search = () => {
           </div> 
         </div>  
       <div className='buttons'>
-        <button className="search-button" onClick={performSearch}>Search</button>
+        <button className="search-button" type='button' id='11' onClick={performSearch}>Search</button>
         {isLoading && <Loader />}
-        <button className="add-article-button">Add Article</button>
+        <button className="add-article-button" type='button' id='12'>Add Article</button>
         {isLoading && <Loader />}
-        <button className="add-img-button" type='button' onClick={(e) => {HandleGenAi(e)}}>Create Image</button>
+        <button className="add-img-button" name='troublebtn' type='button' id='13' onClick={handleGenAi}> Create Image </button>
         {isLoading && <Loader />}
       </div>  
 
@@ -133,9 +132,8 @@ const Search = () => {
           </ul>
         </div>
       )} 
-      {check && <ImageDisplay />}
-       
-   
+      {check && (<img src={imageSrc} alt="Example" style={{ maxWidth: '100%' }} />)}
+        
     </div>
   );
 }
