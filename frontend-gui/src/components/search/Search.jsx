@@ -5,7 +5,7 @@ import ImageDisplay from '../image/ImageDisplay';
 
 const Search = () => { 
   const [searchText, setSearchText] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [cloudinaryUrl, setCloudinaryUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [imageSrc, setImageSrc] = useState('');
@@ -47,8 +47,7 @@ const Search = () => {
       const data = await response.json();
       const endTime = performance.now();
       const elapsedTime = ((endTime - startTime)/1000).toFixed(3);
-      settime(elapsedTime)
-      console.log(data);
+      settime(elapsedTime) 
       setResults(data); 
       setIsLoading(false)
     } catch (error) {
@@ -72,7 +71,10 @@ const Search = () => {
       setIsLoading(true); 
       const response = await fetch(`http://localhost:5000/gen?word=${searchText}`);
       const data = await response.json();   
-      setImageSrc(`data:image/png;base64,${data.image}`)   
+      setImageSrc(`data:image/jpeg;base64,${data.image}`)   
+      setCloudinaryUrl(data.image_cloudinary_url);
+      console.log(cloudinaryUrl)
+      
       setIsLoading(false);
     } catch (error) {
       console.error('Error generating AI image:', error);
@@ -143,8 +145,7 @@ const Search = () => {
           </ul>
         </div>
       )}  
-      {check && (<img src={imageSrc} alt="Example" style={{ maxWidth: '100%' }} />)}
-        
+      {check && (<img src={cloudinaryUrl} alt="Example" style={{ maxWidth: '100%' }} />)} 
     </div>
   );
 }
