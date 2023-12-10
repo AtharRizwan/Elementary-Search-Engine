@@ -1,47 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import "./Search.scss" 
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import React, { useState } from 'react';
+import "./Search.scss"  
 import Loader from "../../components/loader/Loader";  
 import ImageDisplay from '../image/ImageDisplay';
 
 const Search = () => { 
   const [searchText, setSearchText] = useState('');
-  const [searchResults, setSearchResults] = useState([]);
+  const [cloudinaryUrl, setCloudinaryUrl] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
-  const [imageSrc, setImageSrc] = useState(null);
+  const [imageSrc, setImageSrc] = useState('');
   const [check, setcheck] = useState(false);
-
-  let handleSpeechEnd = () => {}
-
-  const {
-    transcript,
-    listening,
-    resetTranscript,
-    browserSupportsSpeechRecognition
-  } = useSpeechRecognition({
-    onEnd: handleSpeechEnd, 
-  });
-
-  handleSpeechEnd = () => {
-    setSearchText(transcript);
+  const [time, settime] = useState(0);
+ 
+  const handleSearchChange = (e) => { 
+    setSearchText(e.target.value); 
   };
 
-  if (!browserSupportsSpeechRecognition) {
-    return <span>Browser doesn't support speech recognition.</span>;
-  }
-  
-  const handleSearchChange = (e) => {
-    if (transcript){
-      setSearchText(transcript);
-    }
-    else{
-      setSearchText(e.target.value);
-    } 
-  };
-
-  const clearTranscript = () => {
-    resetTranscript();
+  const clearTranscript = () => { 
     setSearchText('');
   };
  
@@ -50,8 +25,12 @@ const Search = () => {
     try {
       setcheck(false)
       setIsLoading(true);
+      const startTime = performance.now();
       const response = await fetch(`http://localhost:5000/search_1?word=${searchText}`);
       const data = await response.json(); 
+      const endTime = performance.now();
+      const elapsedTime = ((endTime - startTime)/1000).toFixed(3);
+      settime(elapsedTime)
       setResults(data);
       setIsLoading(false)
     } catch (error) {
@@ -63,9 +42,12 @@ const Search = () => {
     try {
       setcheck(false)
       setIsLoading(true)
+      const startTime = performance.now();
       const response = await fetch(`http://localhost:5000/search_2?word=${searchText}`); 
       const data = await response.json();
-      console.log(data);
+      const endTime = performance.now();
+      const elapsedTime = ((endTime - startTime)/1000).toFixed(3);
+      settime(elapsedTime) 
       setResults(data); 
       setIsLoading(false)
     } catch (error) {
@@ -82,18 +64,17 @@ const Search = () => {
     }
   };
 
-  const HandleGenAi = async () => {
-    try {
-      setcheck(true)
-      setIsLoading(true);
+  const handleGenAi = async (e) => { 
+    try {  
+      setcheck(true);
+      e.preventDefault(); 
+      setIsLoading(true); 
       const response = await fetch(`http://localhost:5000/gen?word=${searchText}`);
-      const data = await response.json();
-      const blob = await response.blob();
-
-      // Create a local URL for the blob
-      const imageUrl = URL.createObjectURL(blob);
-      setImageSrc(imageUrl)
-      setcheck(true)
+      const data = await response.json();   
+      setImageSrc(`data:image/jpeg;base64,${data.image}`)   
+      setCloudinaryUrl(data.image_cloudinary_url);
+      console.log(cloudinaryUrl)
+      
       setIsLoading(false);
     } catch (error) {
       console.error('Error generating AI image:', error);
@@ -101,14 +82,16 @@ const Search = () => {
     }
   };
 
+
   return (
     <div className="search-container">
       <img src="logo.jpeg" alt="Logo" className="logo" />
- 
         <div className="search-bar">
           <input
+            name='searchText'
             type="text"
             placeholder="Search..."
+            id='00'
             value={searchText}
             onChange={handleSearchChange}
           />
@@ -123,33 +106,27 @@ const Search = () => {
             <div className="search-icon" onClick={performSearch} title='Click to search'>&#128269;</div>
             {isLoading && <Loader />}
             <div
-              className="speech-icon"
-              onClick={SpeechRecognition.startListening}
+              className="speech-icon" 
               title="Click to Speak"
             >
               &#128266;
-            </div>
-            {listening && 
-            (
-              <div className="stop-icon"               
-                onClick={SpeechRecognition.startListening}
-                title="Stop Listening">
-              </div>
-            )}
+            </div> 
           </div> 
         </div>  
       <div className='buttons'>
-        <button className="search-button" onClick={performSearch}>Search</button>
+        <button className="search-button" type='button' id='11' onClick={performSearch}>Search</button>
         {isLoading && <Loader />}
-        <button className="add-article-button">Add Article</button>
+        <button className="add-article-button" type='button' id='12'>Add Article</button>
         {isLoading && <Loader />}
-        <button className="add-img-button" onClick={HandleGenAi}>Create Image</button>
+        <button className="add-img-button" name='troublebtn' type='button' id='13' onClick={handleGenAi}> Create Image </button>
         {isLoading && <Loader />}
       </div>  
 
       {(results.titles && results.titles.length > 0) && (
         <div className="search-results-container">
-          <h2 className="search-results-heading">Search Results</h2>
+          <h1 className="search-results-heading">Search Results</h1>
+          <p className='time-cont'> Results found in {time}s</p>
+          <hr/>
           <ul className="search-results-list">
             {results.titles.map((title, index) => (
               <li key={index} className="search-results-item">
@@ -167,13 +144,8 @@ const Search = () => {
             ))}
           </ul>
         </div>
-      )} 
-      <div> 
-       {(imageSrc) &&
-        (<ImageDisplay />)
-       }
-       <ImageDisplay />
-      </div>
+      )}  
+      {check && (<img src={cloudinaryUrl} alt="Example" style={{ maxWidth: '100%' }} />)} 
     </div>
   );
 }

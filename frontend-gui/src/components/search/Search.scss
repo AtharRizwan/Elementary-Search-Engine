@@ -1,4 +1,4 @@
-/* SearchBar.css (CSS Styles) */
+/* -Bar.css (CSS Styles) */
 .search-container {
     display: flex;
     flex-direction: column;
@@ -109,7 +109,7 @@
   }
 
   .add-img-button {
-    width: 150px;
+    width: 130px;
     margin-top: 10px;
     margin-left: 10px;
     padding: 10px;
@@ -178,7 +178,6 @@
 
 /* Updated CSS for the container */
 .search-results-container {
-
   margin: 20px;
   padding: 20px;
   border: 1px solid #ddd;
@@ -196,9 +195,9 @@
 
 /* Style for the heading */
 .search-results-heading {
+  margin-bottom: 0.5px; 
   color: #333;
-  font-size: 1.5em;
-  margin-bottom: 15px;
+  font-size: 1.5em; 
   margin-top: 1px;
 }
 
@@ -225,6 +224,12 @@
 .search-results-link:hover {
   color: #0056b3; /* You can change this color to your preference */
   text-decoration: underline;
+}
+
+.time-cont{
+  margin-top: 0.5px;
+  font-size: medium;  
+  font-weight: 400; 
 }
 
 

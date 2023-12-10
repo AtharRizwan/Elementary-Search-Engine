@@ -3,10 +3,8 @@ import React, { useState, useEffect } from 'react';
 const ImageDisplay = () => {
   const [imageSrc, setImageSrc] = useState('');
 
-  useEffect(() => {
-    // Assuming the image file is named "example.jpg" in the public folder
-    //const imagePath = "C:\\Projects\\Elementary-Search-Engine-Haris\\Photos\\image.jpeg"
-    const imagePath = process.env.PUBLIC_URL + '/Photos/image.jpeg';
+  useEffect(() => { 
+    const imagePath = process.env.PUBLIC_URL + '/Photos/image.jpeg'; 
     setImageSrc(imagePath);
   }, []);
 
