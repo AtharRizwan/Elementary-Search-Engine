@@ -1,17 +1,18 @@
-/* SearchBar.css (CSS Styles) */
+/* -Bar.css (CSS Styles) */
 .search-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 10px;
-    height: 60vh;
+    min-height: 60vh; 
   }
   
-  .logo {
-    margin-right: 20px;
+  .logo { 
     width: 400px; /* Adjust the size as needed */
-    height: 170px; /* Adjust the size as needed */
+    height: 170px; /* Adjust the size as needed */ 
+    max-width: 100%; /* Allow the logo to scale with the container */
+    height: auto; 
   }
   
   .search-bar {
@@ -23,6 +24,10 @@
     border-radius: 25px;
     overflow: hidden;
     margin-top: 10px; /* Adjust the margin as needed */  
+
+ 
+    width: 100%; /* Make the search bar full width */
+    max-width: 600px;   
   }
   
   input {
@@ -82,7 +87,7 @@
   }  
 
   /* Margin between icons */
-  .search-icon + .speech-icon {
+  .search-icon + .speech-icon + .add-img-button {
     margin-left: 5px;
   }
 
@@ -98,8 +103,24 @@
   }
   
   /* Change color on hover */
-  .search-button:hover {
-    background-color: #34a853; /* New color on hover */
+  .search-button:hover { 
+    transform: scale(1.1); /* Adjust the scale factor as needed */
+    cursor: pointer;
+  }
+
+  .add-img-button {
+    width: 130px;
+    margin-top: 10px;
+    margin-left: 10px;
+    padding: 10px;
+    background-color: #f44242; /* Default color */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+   
+  .add-img-button:hover { 
     transform: scale(1.1); /* Adjust the scale factor as needed */
     cursor: pointer;
   }
@@ -122,9 +143,18 @@
     cursor: pointer;
   }
   
-.buttons{
-    display: flex;
+.buttons{ 
     justify-content: space-between;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+@media (min-width: 600px) {
+  .buttons {
+      flex-direction: row; /* Display buttons in a row on larger screens */ 
+  }
 }
 
 .stop-icon {
@@ -148,9 +178,6 @@
 
 /* Updated CSS for the container */
 .search-results-container {
-  position: fixed; /* or position: fixed; */
-  top: 400px; /* Adjust the top position based on your layout */
-  left: 250px; /* Adjust the left position based on your layout */
   margin: 20px;
   padding: 20px;
   border: 1px solid #ddd;
@@ -161,14 +188,16 @@
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.14);
+  background-color: #fff;
+  overflow: hidden; /* Hide overflow content on smaller screens */
 }
 
 
 /* Style for the heading */
 .search-results-heading {
+  margin-bottom: 0.5px; 
   color: #333;
-  font-size: 1.5em;
-  margin-bottom: 15px;
+  font-size: 1.5em; 
   margin-top: 1px;
 }
 
@@ -196,3 +225,11 @@
   color: #0056b3; /* You can change this color to your preference */
   text-decoration: underline;
 }
+
+.time-cont{
+  margin-top: 0.5px;
+  font-size: medium;  
+  font-weight: 400; 
+}
+
+
