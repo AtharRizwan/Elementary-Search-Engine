@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import "./Search.scss"  
 import Loader from "../../components/loader/Loader";   
+import ImageDisplay from '../image/ImageDisplay';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Search = () => { 
-  const [searchText, setSearchText] = useState('');
-  const [cloudinaryUrl, setCloudinaryUrl] = useState('');
+  const [searchText, setSearchText] = useState(''); 
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
   const [imageSrc, setImageSrc] = useState('');
-  const [check, setcheck] = useState(false);
+  const [check, setcheck] = useState(false);  
   const [time, settime] = useState(0);
   const [showForm, setShowForm] = useState(false);
   const [articleTitle, setArticleTitle] = useState('');
@@ -26,21 +28,24 @@ const Search = () => {
  
 
   const handleSingleWordSearch = async () => { 
-    try {
+    try { 
       setcheck(false)
       setIsLoading(true);
+
       const startTime = performance.now();
       const response = await fetch(`http://localhost:5000/search_1?word=${searchText}`);
       const data = await response.json(); 
-      console.log(response);
-      console.log(data)
       const endTime = performance.now();
       const elapsedTime = ((endTime - startTime)/1000).toFixed(3);
+
       settime(elapsedTime)
+      toast.success("Search completed!");
       setResults(data);
-      setIsLoading(false)
+      setIsLoading(false);
+ 
     } catch (error) {
       console.error('Error fetching single word search result:', error);
+      toast.error("Error fetching single word search result!");
     }
   };
 
@@ -56,8 +61,10 @@ const Search = () => {
       settime(elapsedTime) 
       setResults(data); 
       setIsLoading(false)
+      toast.success("Search completed!")
     } catch (error) {
       console.error('Error fetching single word search result:', error);
+      toast.error("Error fetching multi word search result!")
     }
   };
 
@@ -77,19 +84,20 @@ const Search = () => {
       setIsLoading(true); 
       const response = await fetch(`http://localhost:5000/gen?word=${searchText}`);
       const data = await response.json();   
-      setImageSrc(`data:image/jpeg;base64,${data.image}`)   
-      setCloudinaryUrl(data.image_cloudinary_url);
-      console.log(cloudinaryUrl)
+      setImageSrc(`data:image/png;base64,${data.image}`)    
       
       setIsLoading(false);
+      toast.success("Image generated!")
     } catch (error) {
       console.error('Error generating AI image:', error);
       setIsLoading(false);
+      toast.error("Some error!")
     }
   };
 
   const HandleAdd = () => {
     setShowForm(true);
+    setcheck(false);
   };
 
   const handleSubmitForm = async (e) => {
@@ -113,9 +121,10 @@ const Search = () => {
       });
   
       const data = await response.json();
-      console.log(data);
+      toast.success("Article added!")
     } catch (error) {
       console.error('Error submitting form:', error);
+      toast.error("Error submitting form!")
     } finally {
       setIsLoading(false);
     }
@@ -134,7 +143,7 @@ const Search = () => {
 
   return (
     <div className="search-container">
-      <img src="logo.jpeg" alt="Logo" className="logo" />
+      <img src="logo_nust.svg" alt="Logo" className="logo" />
         <div className="search-bar">
           <input
             name='searchText'
@@ -153,13 +162,7 @@ const Search = () => {
                 &#10006;
             </div> 
             <div className="search-icon" onClick={performSearch} title='Click to search'>&#128269;</div>
-            {isLoading && <Loader />}
-            <div
-              className="speech-icon" 
-              title="Click to Speak"
-            >
-              &#128266;
-            </div> 
+            {isLoading && <Loader />} 
           </div> 
         </div>  
       <div className='buttons'>
@@ -172,8 +175,7 @@ const Search = () => {
       </div>  
 
       {showForm && (
-        <form className='form1' onSubmit={handleSubmitForm}>
-          {/* Article Title Input */}
+        <form className='form1' onSubmit={handleSubmitForm}> 
           <label className='lb' htmlFor="articleTitle">Article Title</label>
           <input
             type="text"
@@ -182,8 +184,7 @@ const Search = () => {
             onChange={(e) => setArticleTitle(e.target.value)}
             required
           />
-
-          {/* Article URL Input */}
+ 
           <label className='lb' htmlFor="articleUrl">Article URL</label>
           <input
             type="url"
@@ -192,8 +193,7 @@ const Search = () => {
             onChange={(e) => setArticleUrl(e.target.value)}
             required
           />
-
-          {/* Article Content Input */}
+ 
           <label className='lb'  htmlFor="articleContent">Article Content</label>
           <textarea
             className='txt'
@@ -216,13 +216,13 @@ const Search = () => {
         </form>
       )}
 
-      {(results.titles && results.titles.length > 0) && (
+      {(results.titles && results.titles.length > 0 && !check) && (
         <div className="search-results-container">
           <h1 className="search-results-heading">Search Results</h1>
           <p className='time-cont'> {results.titles.length} results found in {time}s</p>
           <hr/>
           <ul className="search-results-list">
-            {results.titles.map((title, index) => (
+          {results.titles.slice(0, Math.min(results.titles.length, 500)).map((title, index)=> (
               <li key={index} className="search-results-item">
                 <a
                   href={results.urls[index]}
@@ -238,7 +238,8 @@ const Search = () => {
         </div>
       )}  
 
-      {check && (<img src={cloudinaryUrl} alt="Example" style={{ maxWidth: '100%' }} />)} 
+      {check && 
+      <ImageDisplay imgSrc={imageSrc} />} 
     </div>
   );
 }
