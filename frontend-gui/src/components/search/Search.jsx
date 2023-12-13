@@ -15,17 +15,7 @@ const Search = () => {
   const [articleUrl, setArticleUrl] = useState('');
   const [articleContent, setArticleContent] = useState('');
 
- 
-  const handleSubmitForm = (e) => {
-    // Handle form submission logic
-    e.preventDefault();
 
-    // ... (your form submission logic)
-
-    // Hide the form after submission
-    setShowForm(false);
-  };
- 
   const handleSearchChange = (e) => { 
     setSearchText(e.target.value); 
   };
@@ -101,6 +91,20 @@ const Search = () => {
   const HandleAdd = () => {
     setShowForm(true);
   };
+
+  const handleSubmitForm = () => {
+    e.preventDefault();
+
+    // Use the values of articleTitle, articleUrl, and articleContent as needed for submission logic
+    console.log('Article Title:', articleTitle);
+    console.log('Article URL:', articleUrl);
+    console.log('Article Content:', articleContent);
+
+    // Clear form fields after submission
+    setArticleTitle('');
+    setArticleUrl('');
+    setArticleContent('');
+  }
 
 
   return (
