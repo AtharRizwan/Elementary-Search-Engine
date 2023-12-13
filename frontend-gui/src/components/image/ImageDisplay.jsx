@@ -10,7 +10,7 @@ const ImageDisplay = () => {
 
   return (
     <div>
-      <h2>Image Display:</h2>
+      <h2>Image Display</h2>
       {imageSrc && <img src={imageSrc} alt="Example" style={{ maxWidth: '100%' }} />}
     </div>
   );

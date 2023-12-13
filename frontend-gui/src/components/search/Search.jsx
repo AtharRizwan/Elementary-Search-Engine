@@ -14,7 +14,7 @@ const Search = () => {
   const [articleTitle, setArticleTitle] = useState('');
   const [articleUrl, setArticleUrl] = useState('');
   const [articleContent, setArticleContent] = useState('');
-
+  const [selectedFile, setSelectedFile] = useState(null);
 
   const handleSearchChange = (e) => { 
     setSearchText(e.target.value); 
@@ -92,19 +92,44 @@ const Search = () => {
     setShowForm(true);
   };
 
-  const handleSubmitForm = () => {
+  const handleSubmitForm = async (e) => {
     e.preventDefault();
 
-    // Use the values of articleTitle, articleUrl, and articleContent as needed for submission logic
-    console.log('Article Title:', articleTitle);
-    console.log('Article URL:', articleUrl);
-    console.log('Article Content:', articleContent);
+    const formData = new FormData();
+    formData.append('title', articleTitle);
+    formData.append('url', articleUrl);
+    formData.append('content', articleContent);
+  
+    if (selectedFile) {
+      formData.append('file', selectedFile);
+    }
+  
+    setIsLoading(true);
+  
+    try {
+      const response = await fetch('http://localhost:5000/add', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    } finally {
+      setIsLoading(false);
+    }
 
     // Clear form fields after submission
     setArticleTitle('');
     setArticleUrl('');
     setArticleContent('');
   }
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setSelectedFile(file);
+  };
 
 
   return (
@@ -147,9 +172,9 @@ const Search = () => {
       </div>  
 
       {showForm && (
-        <form onSubmit={handleSubmitForm}>
+        <form className='form1' onSubmit={handleSubmitForm}>
           {/* Article Title Input */}
-          <label htmlFor="articleTitle">Article Title:</label>
+          <label className='lb' htmlFor="articleTitle">Article Title</label>
           <input
             type="text"
             id="articleTitle"
@@ -159,7 +184,7 @@ const Search = () => {
           />
 
           {/* Article URL Input */}
-          <label htmlFor="articleUrl">Article URL:</label>
+          <label className='lb' htmlFor="articleUrl">Article URL</label>
           <input
             type="url"
             id="articleUrl"
@@ -169,15 +194,25 @@ const Search = () => {
           />
 
           {/* Article Content Input */}
-          <label htmlFor="articleContent">Article Content:</label>
+          <label className='lb'  htmlFor="articleContent">Article Content</label>
           <textarea
+            className='txt'
             id="articleContent"
             value={articleContent}
             onChange={(e) => setArticleContent(e.target.value)}
             required
-          ></textarea>
+          ></textarea> 
+          <label className='lb' htmlFor="jsonFile">Select JSON File</label>
+          <input
+            type="file"
+            id="jsonFile"
+            accept=".json"
+            onChange={handleFileChange}
+          />
 
-          <button type="submit">Submit</button>
+          
+
+          <button className='btn'  type="submit">Submit</button>
         </form>
       )}
 
