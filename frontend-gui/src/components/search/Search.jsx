@@ -46,6 +46,7 @@ const Search = () => {
     } catch (error) {
       console.error('Error fetching single word search result:', error);
       toast.error("Error fetching single word search result!");
+      setIsLoading(false)
     }
   };
 
@@ -65,6 +66,7 @@ const Search = () => {
     } catch (error) {
       console.error('Error fetching single word search result:', error);
       toast.error("Error fetching multi word search result!")
+      setIsLoading(false)
     }
   };
 
@@ -179,6 +181,7 @@ const Search = () => {
         <form className='form1' onSubmit={handleSubmitForm}> 
           <label className='lb' htmlFor="articleTitle">Article Title</label>
           <input
+            className='inp'
             type="text"
             id="articleTitle"
             value={articleTitle}
@@ -187,6 +190,7 @@ const Search = () => {
  
           <label className='lb' htmlFor="articleUrl">Article URL</label>
           <input
+          className='inp'
             type="url"
             id="articleUrl"
             value={articleUrl}

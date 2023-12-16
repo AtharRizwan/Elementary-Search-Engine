@@ -259,6 +259,7 @@
   border-radius: 4px;
   box-sizing: border-box;
   width: 100%;
+  font-family: "font-family-example", sans-serif;
 }
 
 /* Styles for the submit button */
@@ -274,4 +275,17 @@
 /* Hover effect for the submit button */
 .btn:hover {
   background-color: #45a049;
+}
+
+.inp{
+  margin-top: 10px;
+  flex: 1; 
+  padding: 10px; 
+  outline: 2px solid rgba(0, 0, 0, 0.088);
+  border: 1px solid rgba(0, 0, 0, 0.116);
+}
+
+.inp:focus{
+  outline: 2px solid black;
+  border: 1px solid black;
 }
