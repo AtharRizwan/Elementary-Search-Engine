@@ -181,8 +181,7 @@ const Search = () => {
             type="text"
             id="articleTitle"
             value={articleTitle}
-            onChange={(e) => setArticleTitle(e.target.value)}
-            required
+            onChange={(e) => setArticleTitle(e.target.value)} 
           />
  
           <label className='lb' htmlFor="articleUrl">Article URL</label>
@@ -190,8 +189,7 @@ const Search = () => {
             type="url"
             id="articleUrl"
             value={articleUrl}
-            onChange={(e) => setArticleUrl(e.target.value)}
-            required
+            onChange={(e) => setArticleUrl(e.target.value)} 
           />
  
           <label className='lb'  htmlFor="articleContent">Article Content</label>
@@ -199,8 +197,7 @@ const Search = () => {
             className='txt'
             id="articleContent"
             value={articleContent}
-            onChange={(e) => setArticleContent(e.target.value)}
-            required
+            onChange={(e) => setArticleContent(e.target.value)} 
           ></textarea> 
           <label className='lb' htmlFor="jsonFile">Select JSON File</label>
           <input
