@@ -121,7 +121,8 @@ const Search = () => {
       });
   
       const data = await response.json();
-      toast.success("Article added!")
+      toast.success(data.message)
+      setIsLoading(false);
     } catch (error) {
       console.error('Error submitting form:', error);
       toast.error("Error submitting form!")
