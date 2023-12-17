@@ -239,17 +239,18 @@
 /* Styles for the form container */
 .form1 {
   display: flex;
-  flex-direction: column;
-  max-width: 600px;
-  width: 600px;
-  margin: auto;
+  flex-direction: column;  
   margin-top: 10px;
+  max-width: 1000px; /* Set a maximum width for the form */
+  margin: 0 auto; /* Center the form on the page */
+  padding: 20px;
 }
 
 /* Styles for the form labels */
 .lb {
   margin-top: 10px;
   font-weight: bold;
+  display: block;
 }
 
 .txt {
@@ -281,11 +282,25 @@
   margin-top: 10px;
   flex: 1; 
   padding: 10px; 
-  outline: 2px solid rgba(0, 0, 0, 0.088);
+  outline: 1px solid rgba(0, 0, 0, 0.088);
   border: 1px solid rgba(0, 0, 0, 0.116);
 }
 
 .inp:focus{
-  outline: 2px solid black;
+  outline: 1px solid black;
   border: 1px solid black;
+}
+
+@media screen and (max-width: 1000px) {
+  .form1 {
+    max-width: 100%; /* Allow the form to take up the full width on smaller screens */
+    padding: 10px;
+  }
+  
+  .inp,
+  .url,
+  .txt,
+  #jsonFile {
+    box-sizing: border-box;
+  }
 }

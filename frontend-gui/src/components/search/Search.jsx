@@ -177,7 +177,7 @@ const Search = () => {
         {isLoading && <Loader />}
       </div>  
 
-      {showForm && (
+      {showForm && ( 
         <form className='form1' onSubmit={handleSubmitForm}> 
           <label className='lb' htmlFor="articleTitle">Article Title</label>
           <input
@@ -211,9 +211,6 @@ const Search = () => {
             accept=".json"
             onChange={handleFileChange}
           />
-
-          
-
           <button className='btn'  type="submit">Submit</button>
         </form>
       )}
