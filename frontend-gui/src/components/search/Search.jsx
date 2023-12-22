@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import "./Search.scss"  
 import Loader from "../../components/loader/Loader";   
 import ImageDisplay from '../image/ImageDisplay';
 import { toast } from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
+import "./Search.scss"  
 
 const Search = () => { 
+  // ------------------------------------------------------------------
+  // Declare state variables
   const [searchText, setSearchText] = useState(''); 
   const [isLoading, setIsLoading] = useState(false);
   const [results, setResults] = useState([]);
@@ -17,39 +20,74 @@ const Search = () => {
   const [articleUrl, setArticleUrl] = useState('');
   const [articleContent, setArticleContent] = useState('');
   const [selectedFile, setSelectedFile] = useState(null);
+  // ------------------------------------------------------------------
 
+
+
+  // ------------------------------------------------------------------
+  // Function that handles the change in the search text
   const handleSearchChange = (e) => { 
     setSearchText(e.target.value); 
   };
 
+  // Function that clears the search text
   const clearTranscript = () => { 
     setSearchText('');
   };
+  // ------------------------------------------------------------------
  
 
+
+
+  // --------------------------------------------------------------------------------------------
+  // Function that handles the single word search by calling flask api endpoint
   const handleSingleWordSearch = async () => { 
     try { 
+      // Clear the image source
       setcheck(false)
+
+      // initiate the Loading gif
       setIsLoading(true);
 
+      // Start the timer
       const startTime = performance.now();
+
+      // Fetch the data from the flask api endpoint
       const response = await fetch(`http://localhost:5000/search_1?word=${searchText}`);
+
+      // Convert the response to json
       const data = await response.json(); 
+
+      // Stop the timer
       const endTime = performance.now();
+
+      // Calculate the elapsed time in seconds
       const elapsedTime = ((endTime - startTime)/1000).toFixed(3);
 
+      // Set the elapsed time
       settime(elapsedTime)
       toast.success("Search completed!");
       setResults(data);
+
+      // Stop the Loading gif
       setIsLoading(false);
  
     } catch (error) {
       console.error('Error fetching single word search result:', error);
       toast.error("Error fetching single word search result!");
+
+      // Stop the Loading gif
       setIsLoading(false)
     }
   };
+  // --------------------------------------------------------------------------------------------
 
+
+
+
+  
+  // --------------------------------------------------------------------------------------------
+  // Function that handles the multi word search by calling flask api endpoint
   const handleMultiWordSearch = async () => {
     try {
       setcheck(false)
@@ -69,25 +107,52 @@ const Search = () => {
       setIsLoading(false)
     }
   };
+  // --------------------------------------------------------------------------------------------
 
+
+
+
+  // FUNCTION THAT HANDLES THE SEARCH AND CALLS THE RESPECTIVE FUNCTIONS
+  // --------------------------------------------------------------------------------------------
   const performSearch = () => {
+    // Split the search text into words
     const words = searchText.trim().split(/\s+/);
+
+    // If there is only one word, call the single word search function
     if (words.length === 1) {
       handleSingleWordSearch();
     } else if (words.length > 1) {
+      // If there are more than one word, call the multi word search function
       handleMultiWordSearch();
     }
   };
+  // --------------------------------------------------------------------------------------------
 
+
+
+
+
+  // FUNCTION THAT HANDLES THE GENERATION OF AI IMAGE
+  // --------------------------------------------------------------------------------------------
   const handleGenAi = async (e) => { 
     try {  
+      // Clear the image source
       setcheck(true);
+
+      // initiate the Loading gif
       e.preventDefault(); 
       setIsLoading(true); 
+
+      // Fetch the data from the flask api endpoint
       const response = await fetch(`http://localhost:5000/gen?word=${searchText}`);
-      const data = await response.json();   
-      setImageSrc(`data:image/png;base64,${data.image}`)    
+
+      // Convert the response to json
+      const data = await response.json();  
       
+      // Set the image source
+      setImageSrc(`data:image/png;base64,${data.image}`)    
+
+      // Stop the Loading gif
       setIsLoading(false);
       toast.success("Image generated!")
     } catch (error) {
@@ -96,7 +161,13 @@ const Search = () => {
       toast.error("Some error!")
     }
   };
+  // --------------------------------------------------------------------------------------------
 
+
+
+
+  // FUNCTION THAT HANDLES THE ADDING OF ARTICLE
+  // --------------------------------------------------------------------------------------------
   const HandleAdd = () => {
     setShowForm(true);
     setcheck(false);
@@ -105,25 +176,33 @@ const Search = () => {
   const handleSubmitForm = async (e) => {
     e.preventDefault();
 
+    // Create a new form data object
     const formData = new FormData();
     formData.append('title', articleTitle);
     formData.append('url', articleUrl);
     formData.append('content', articleContent);
   
+
+    // If a file is selected, append it to the form data object
     if (selectedFile) {
       formData.append('file', selectedFile);
     }
   
+    // Set the Loading gif
     setIsLoading(true);
   
+    // Submit the form data to the flask api endpoint
     try {
       const response = await fetch('http://localhost:5000/add', {
         method: 'POST',
         body: formData,
       });
   
+      // Convert the response to json
       const data = await response.json();
       toast.success(data.message)
+
+      // Stop the Loading gif
       setIsLoading(false);
     } catch (error) {
       console.error('Error submitting form:', error);
@@ -138,10 +217,12 @@ const Search = () => {
     setArticleContent('');
   }
 
+  // Function that handles the change in the file input
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setSelectedFile(file);
   };
+  // --------------------------------------------------------------------------------------------
 
 
   return (
@@ -211,9 +292,6 @@ const Search = () => {
             accept=".json"
             onChange={handleFileChange}
           />
-
-          
-
           <button className='btn'  type="submit">Submit</button>
         </form>
       )}
