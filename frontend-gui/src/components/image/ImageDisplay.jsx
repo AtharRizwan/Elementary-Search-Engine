@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
+// Function that displays the image by taking in the source/URI of the image as a prop
 const ImageDisplay = ({ imgSrc }) => { 
 
+  // If there is an image source, display the image
   return (
     <div>
       <h2>Image Display</h2>
