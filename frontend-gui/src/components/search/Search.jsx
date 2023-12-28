@@ -200,8 +200,9 @@ const Search = () => {
   
       // Convert the response to json
       const data = await response.json();
+      console.log(data)
       toast.success(data.message)
-
+  
       // Stop the Loading gif
       setIsLoading(false);
     } catch (error) {
