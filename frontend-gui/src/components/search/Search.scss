@@ -240,10 +240,11 @@
 .form1 {
   display: flex;
   flex-direction: column;
-  max-width: 600px;
-  width: 600px;
+  max-width: 450px; 
   margin: auto;
   margin-top: 10px;
+  padding: 0 15px; /* Add padding for better spacing */
+  width: 100%;
 }
 
 /* Styles for the form labels */
@@ -270,6 +271,7 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  align-items: center;
 }
 
 /* Hover effect for the submit button */
@@ -278,11 +280,13 @@
 }
 
 .inp{
+  align-items: center;
   margin-top: 10px;
   flex: 1; 
   padding: 10px; 
-  outline: 2px solid rgba(0, 0, 0, 0.088);
+  outline: 1px solid rgba(0, 0, 0, 0.088);
   border: 1px solid rgba(0, 0, 0, 0.116);
+  width: 100%;
 }
 
 .inp:focus{

@@ -68,6 +68,7 @@ const Search = () => {
       settime(elapsedTime)
       toast.success("Search completed!");
       setResults(data);
+      setShowForm(false);
 
       // Stop the Loading gif
       setIsLoading(false);
@@ -101,6 +102,7 @@ const Search = () => {
       setResults(data); 
       setIsLoading(false)
       toast.success("Search completed!")
+      setShowForm(false);
     } catch (error) {
       console.error('Error fetching single word search result:', error);
       toast.error("Error fetching multi word search result!")
@@ -151,7 +153,7 @@ const Search = () => {
       
       // Set the image source
       setImageSrc(`data:image/png;base64,${data.image}`)    
-
+      setShowForm(false);
       // Stop the Loading gif
       setIsLoading(false);
       toast.success("Image generated!")
@@ -169,8 +171,8 @@ const Search = () => {
   // FUNCTION THAT HANDLES THE ADDING OF ARTICLE
   // --------------------------------------------------------------------------------------------
   const HandleAdd = () => {
-    setShowForm(true);
     setcheck(false);
+    setShowForm(true);
   };
 
   const handleSubmitForm = async (e) => {
@@ -297,7 +299,7 @@ const Search = () => {
         </form>
       )}
 
-      {(results.titles && results.titles.length > 0 && !check) && (
+      {(results.titles && results.titles.length > 0 && !check && !showForm) && (
         <div className="search-results-container">
           <h1 className="search-results-heading">Search Results</h1>
           <p className='time-cont'> {results.titles.length} results found in {time}s</p>
